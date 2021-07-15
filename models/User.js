@@ -1,30 +1,37 @@
 const mongoose = require('mongoose');
 
-
 const userSchema = mongoose.Schema({
-    name : {
+    name: {
         type: String,
         maxlength: 50
     },
     email: {
         type: String,
-        trim : true,
-        unique:1
+        trim: true,
+        unique: 1
     },
-    password :{
-        type:String,
-        minlength:50
+    password: {
+        type: String,
+        minlength: 5
     },
-    role : {
-        //관리자, 일반인 유저 구분 할 수 있게
-        type:Number,
-        default :0
+    lastname: {
+        type: String,
+        maxlength: 50
     },
-    image : String,
-    token : {
+    role: {
+        type: Number,
+        default: 0
+    },
+    image: String,
+    token: {
         type: String
     },
-    tokenExp:{
-        type : Number
+    tokenExp: {
+        type: Number
     }
 })
+
+const User = mongoose.model('User', userSchema)
+
+//다른곳에서도 사용할 수 있게
+module.exports = { User }
