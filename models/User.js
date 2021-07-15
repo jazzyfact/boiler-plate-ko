@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const saltRounds = 10 //10자리인 salt를 이용해 비밀번호를 암호화한다
 
 const userSchema = mongoose.Schema({
     name: {
@@ -30,6 +32,26 @@ const userSchema = mongoose.Schema({
         type: Number
     }
 })
+
+//유저모델 저장하기 전에
+userSchema.pre('save',function(next){
+    const user = this;
+    //비밀번호를 암호화 시킨다.
+    bcrypt.genSalt(saltRounds, function(err, salt){
+        if(err) return next(err)
+
+        //paln password 들어가있음
+        bcrypt.hash(user.password, salt, function(err, hash){
+            if(err) return next(err)
+            user.password = hash//hash형태로 바꿔줌
+            next()
+        })
+    })
+})
+
+
+
+
 
 const User = mongoose.model('User', userSchema)
 
