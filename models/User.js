@@ -36,7 +36,11 @@ const userSchema = mongoose.Schema({
 //유저모델 저장하기 전에
 userSchema.pre('save',function(next){
     const user = this;
-    //비밀번호를 암호화 시킨다.
+
+
+    //패스워드가 변경 될 때 마다 암호화 
+    if(user.isModified('password')){
+         //비밀번호를 암호화 시킨다.
     bcrypt.genSalt(saltRounds, function(err, salt){
         if(err) return next(err)
 
@@ -45,8 +49,11 @@ userSchema.pre('save',function(next){
             if(err) return next(err)
             user.password = hash//hash형태로 바꿔줌
             next()
+            })
         })
-    })
+    }else {
+        next()
+    }
 })
 
 
