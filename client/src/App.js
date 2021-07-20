@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,20 +6,15 @@ import {
   Link
 } from "react-router-dom";
 
-import LandingPage from './components/views/LandingPage/LandingPage';
-import LoginPage  from './components/views/LoginPage/LoginPage';
+import LandingPage from './components/views/LandingPage/LandingPage'
+import LoginPage from './components/views/LoginPage/LoginPage';
 import RegisterPage from './components/views/RegisterPage/RegisterPage';
+import Auth from './hoc/auth'
 
-
-class App extends Component {
-  render() {
-    return (
-      <Router>
+function App() {
+  return (
+    <Router>
       <div>
-        
-
-        <hr />
-
         {/*
           A <Switch> looks through all its children <Route>
           elements and renders the first one whose path
@@ -28,15 +23,13 @@ class App extends Component {
           of them to render at a time
         */}
         <Switch>
-          <Route exact path="/" component={LandingPage}/>
-          <Route path="/login" component={LoginPage}/>
-          <Route path="/register" component={RegisterPage}/>
+          <Route exact path="/" component={Auth(LandingPage, null )  } />
+          <Route exact path="/login" component={Auth(LoginPage, false) } />
+          <Route exact path="/register" component={Auth(RegisterPage, false)} />
         </Switch>
       </div>
     </Router>
-    );
-  }
+  );
 }
 
 export default App;
-
